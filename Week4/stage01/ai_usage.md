@@ -24,5 +24,4 @@ I tested:
 
 The AI version behaved correctly and raised errors where expected.
 
-## Notes
-AI helped me understand the structure and limitations of the human version.
+
