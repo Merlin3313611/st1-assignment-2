@@ -167,31 +167,115 @@ Prompt: Act as a software requirements reviewer. Review the SmartCare
 requirements for ambiguity, inconsistency, missing clarification
 questions and testability. Do NOT invent new client requirements. For
 every suggestion, state whether it is based on evidence or is only a
-question/assumption requiring validation.
+question/assumption requiring validation.  
+  
+**Ambiguities**
+
+- **Ambiguity: Appointment history duration** *Assumption requiring
+  validation* — The brief mentions “limited appointment history”, but
+  your FR‑06 only specifies retaining cancelled appointments for 30
+  days. It is unclear whether full history should be permanent.
+
+- **Ambiguity: Appointment status types** *Assumption requiring
+  validation* — The brief mentions “inconsistent appointment status”,
+  but the allowed statuses (booked, completed, cancelled, no‑show) are
+  not defined.
+
+- **Ambiguity: Practitioner availability definition** *Assumption
+  requiring validation* — FR‑08 requires showing availability, but the
+  rules for availability (working hours, breaks, booked slots) are not
+  defined.
+
+- **Ambiguity: Required patient/practitioner fields** *Assumption
+  requiring validation* — FR‑01 and FR‑02 mention creating records, but
+  the mandatory fields (phone, email, ID, specialty) are not fully
+  defined.
+
+**Inconsistencies**
+
+- **Inconsistency: Appointment history vs performance requirement**
+  *Evidence‑based* — NFR‑06 states performance for “up to 500
+  appointments”, but a clinic with long‑term history may exceed this.
+  The scope suggests history is important, so the performance limit may
+  be too low.
+
+- **Inconsistency: Partial search behaviour** *Evidence‑based* — FR‑07
+  does not specify partial matching, but acceptance criteria show
+  “Samantha” should match “Mrs Samantha Smith”.
+
+**Missing Clarification Questions**
+
+- **Clarification: What happens after cancelled appointments are
+  retained for 30 days?** *Assumption requiring validation* — FR‑06 does
+  not specify whether they are deleted, archived, or anonymised.
+
+- **Clarification: What fields must appear in basic operational
+  reports?** *Assumption requiring validation* — FR‑12 does not define
+  minimum report content.
+
+- **Clarification: What defines a practitioner’s availability?**
+  *Assumption requiring validation* — FR‑08 requires showing
+  availability but does not define the rules.
+
+- **Clarification: What appointment statuses exist?** *Assumption
+  requiring validation* — FR‑09 mentions updating status but does not
+  define the list.
+
+**Testability Issues**
+
+- **Testability: Some FRs lack measurable criteria** *Evidence‑based* —
+  FR‑03 (booking), FR‑08 (availability), and FR‑12 (reporting) do not
+  specify measurable outputs.
+
+- **Testability: Only one error scenario defined.** *Evidence‑based* —
+  Acceptance criteria cover duplicate bookings and double cancellation,
+  but other errors (missing fields, invalid time) are not defined.
+
+- **Testability: Usability requirement unclear.** *Assumption requiring
+  validation* — NFR‑03 states “less than 5 steps” but does not define
+  what counts as a step.
 
 # Part G - VERIFY the AI Review
 
 Classify each significant AI suggestion as Accepted, Modified, Rejected,
 or Unverified. Explain the evidence used.
 
-| AI suggestion                                      | Decision   | Reason/Evidence                                                                      |
-|----------------------------------------------------|------------|--------------------------------------------------------------------------------------|
-| Add SMS reminders                                  | Rejected   | Not in the case study, and it adds scope that Is beyond a small, maintainable system |
-| Add duplicate booking check                        | Accepted   | Directly address the stated problem: duplicate appointment bookings                  |
-| Add patient login or self-booking                  | Unverified | It is a feature that can be added but is not yet confirmed by the client's brief.    |
-| Retains cancelled appointments in history database | Accepted   | Directly solves the problem “lack of reliable appointment history”                   |
-| Add a treatment recommendation feature             | Rejected   | No clinic requirement exists in the brief; therefore, it is beyond scope             |
+| AI suggestion                                                       | Decision         | Reason/Evidence                                                                                                             |
+|---------------------------------------------------------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| Appointment history duration unclear (30 days not client-confirmed) | Unverified       | 30 days was my decision and it has not yet been verified against client confirmation, so it would be kept as an assumption. |
+| Appointment status types undefined                                  | Accepted         | Booked/completed/cancelled/no-show is the usual default but is not yet verified with the client requirement                 |
+| Practitioner availability definition unclear                        | Accepted         | Directly solves the problem “lack of reliable appointment history”                                                          |
+| Required patient/practitioner fields undefined                      | Accepted         | FR-08 doesn't define what "availability" means (hours vs free slots vs breaks) so it will be added as an open question.     |
+| History vs performance (500) inconsistency                          | Accepted         | FR-01/FR-02 don't list mandatory fields. A minimal field list will be added as an assumption.                               |
+| Partial search behaviour inconsistency                              | Accepted         | It can be accepted as FR-07 doesn’t say partial match, but my acceptance criteria assumes it.                               |
+| What happens after 30-day retention?                                | Same as Number 1 | Same issue and statement 1                                                                                                  |
+| What fields must basic reports contain?                             | Accepted         | FR-13 doesn't define report output fields, so this will be added to open questions.                                         |
+| What defines practitioner availability?                             | Same as Number 3 | Same issue is restated                                                                                                      |
+| What appointment statuses exist?                                    | Same as Number 2 | Same issue is restated                                                                                                      |
+| Only one error scenario type is defined in the acceptance criteria  | Accepted         | Only duplicate booking and double cancel is written as negative scenarios; more could be added.                             |
+| "Less than 5 steps" (NFR-03) doesn't define a "step"                | Accepted         | Step was undefined; it can be a click or screen button, so adding an example would make it better.                          |
 
-#  * Assumptions and Open Questions:- 
-*Assumption: Only one clinic location is in scope as multi-site is not mentioned.
+#  * Assumptions and Open Questions:-
 
-Assumption: No login/user-role system is required yet; provisional, pending client confirmation.
+**Assumptions**
 
-Open question: Should patients be able to book their own appointments, or is this staff-only?
+ Cancelled appointment history is retained for 30 days. This was not specified by the client and needs confirmation.
 
-Open question: Is a maximum number of appointments per day per practitioner needed?
+ Appointment statuses are limited to: booked, completed, cancelled, no show.
 
-Open question: What fields are required in the basic operational report (e.g., by practitioner, date/time, or by status)
+**Open Questions**
+
+What happens to appointment history after the 30-day retention period? Is it deleted or archived? 
+
+What exactly defines a practitioner's "availability" (working hours, breaks, already booked slots)?
+
+ What fields are mandatory when creating a patient or practitioner record (e.g. phone, email, ID, specialty)?
+
+What fields must appear in the basic operational report (e.g. by practitioner, by date, by status)?
+ 
+What counts as a "step" in the NFR-03 usability requirement (a click, a screen, a field)?
+
+
 
 # Part H - Finalize SmartCare v0.2
 
