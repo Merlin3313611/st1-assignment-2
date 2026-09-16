@@ -1,27 +1,55 @@
-# AI Usage Log
+# AI Usage (AI ON)
 
-## How AI was used
-AI was used in Part C (tutor explanation) and Part D (alternative function generation).  
-The human-written prototype was provided in the assignment instructions, so I did not build it from scratch. I reviewed the given code first, then used AI to understand it better.
+## **1. What the code does**
+The program prints a welcome message and displays two appointments using simple variables.
 
-## What AI provided
-- An explanation of how the human-written code works  
-- Three limitations of the human version  
-- Suggestions for improvements  
-- A simple beginner-friendly Python function using lists and dictionaries (no database, no GUI)
+In the enhanced version, it introduces:
 
-## What I changed based on AI
-- Added validation for empty patient names  
-- Added awareness of duplicate bookings  
-- Improved understanding of how to structure functions and handle errors
+### **`appointments` list**
+A list that stores all booked appointments as dictionaries.
 
-## How I verified AI output
-I tested:
-- Normal appointment  
-- Blank patient name  
-- Duplicate practitioner/time  
-- Strange inputs like None  
+### **`book_appointment()` function**
+- Validates that the patient name is not empty.  
+- Creates a dictionary with:
+  - `"patient"`
+  - `"practitioner"`
+  - `"time"`
+- Appends the dictionary to the `appointments` list.
 
-The AI version behaved correctly and raised errors where expected.
+### **`display_appointments()` function**
+- Checks if the list is empty.  
+- If not, loops through each appointment and prints the details.
 
+Finally, the program books two sample appointments and displays them.
+
+---
+
+## **2. Three limitations**
+1. **Only patient name is validated**  
+   Practitioner name and appointment time could be empty or invalid.
+
+2. **No double‑booking protection**  
+   A practitioner could be booked twice at the same time.
+
+3. **No user interaction**  
+   All appointments are hard‑coded; users cannot enter new ones.
+
+---
+
+## **3. Suggested improvements**
+- Add validation for practitioner name and appointment time.  
+- Add a check to prevent double‑booking the same practitioner at the same time.  
+- Add user input (`input()`) so appointments can be entered interactively.  
+- Add time formatting or parsing to ensure consistent appointment times.
+
+---
+
+## **4. No rewrite provided**
+Only explanations and suggestions — the application is unchanged.
+
+---
+
+## **5. Two questions to test your understanding**
+1. Why is a list of dictionaries more flexible than using separate variables for each appointment?  
+2. What issue might occur if the system allows a practitioner to be booked for two appointments at the same time?
 
