@@ -1,0 +1,138 @@
+AI OFF -\> AI ON -\> COMPARE -\> VERIFY \| 1 hour
+
+# A - Requirements Review
+
+Highlight nouns, verbs and business rules in SmartCare v0.2.  
+Ans:-  
+***Nouns***: patient, practitioner, appointment, appointment status,
+report, history.  
+***Verbs:*** create, book, cancel, search, update status, generate
+report, prevent duplicates.  
+***Business rules:*** a practitioner cannot have two appointments at the
+same time (FR-04/FR-11); cancelled appointments are retained for 30
+days, not deleted (FR-06).
+
+# B - Candidate Classes
+
+Record candidate concepts, supporting requirements, state, and
+behavior.  
+Ans:-  
+1. Patient (FR-01, FR-07, FR-10) - state: name, contact; behavior: none
+beyond basic validity.  
+2. Practitioner (FR-02, FR-04, FR-08) - state: name, specialty;
+behavior: none beyond basic validity.  
+3. Appointment (FR-03, FR-04, FR-05, FR-06, FR-09, FR-11) - state:
+date_time, status; behavior: cancel(), status transitions,
+duplicate-conflict validation.
+
+Rejected as classes:  
+- Database (infrastructure),  
+- Cancellation (a status transition of Appointment),  
+- Status (enumerated value),  
+- Report (query output).
+
+# C - CRC Cards
+
+## Create CRC cards for Patient, Practitioner and Appointment.  Patient
+
+| Responsibilities                                                                                                                                                                                                           | Collaborators |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| Holds the patient's own name and contact info; makes sure that data isn't left blank/invalid before it's used elsewhere, and it is what the appointment points to when it needs to know who the patient is.(FR-01, FR-07). | Appointment   |
+|                                                                                                                                                                                                                            |               |
+
+## Practitioner
+
+| Responsibilities                                                                                                                                    | Collaborators |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| To know the practitioner’s name/specialty; provide practitioner details for scheduling; and support duplicate-booking checks (FR-02, FR-04, FR-08). | Appointment   |
+|                                                                                                                                                     |               |
+
+## Appointment
+
+| Responsibilities                                                                                                                                                                             | Collaborators         |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
+| To know the linked patient, practitioner, date/time, and status; manage valid cancellation and status transitions; and prevent duplicate bookings (FR-03, FR-04, FR-05, FR-06, FR-09, FR-11) | Patient; Practitioner |
+|                                                                                                                                                                                              |                       |
+
+# D - UML Model
+
+Draw classes, attributes, operations, associations and multiplicities.  
+  ![UML Class Diagram](data:image/png;base64,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)  
+
+
+# E - AI Design Review
+
+Ask AI to suggest classes and relationships using only confirmed requirements; require supporting requirement IDs. Prompt used -Using only the confirmed SmartCare requirements below, suggest candidate domain classes, responsibilities, and relationships. For every suggestion, cite which requirement supports it. Do not invent features, database concerns, or UI details. Flag anything uncertain separately for human review.
+
+| AI suggestion                                            | Evidence                                                                                         | Decision     | Reason                                                                                       | Model change                                                                                                              |
+|----------------------------------------------------------|--------------------------------------------------------------------------------------------------|--------------|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Include a **Patient** class                              | FR‑01 (create patient), FR‑07 (search patient), FR‑10 (view history)                             | Accepted     | All three requirements explicitly require patient records and history                        | Patient class added with minimal attributes (name, contact details)                                                       |
+| Include a **Practitioner** class                         | FR‑02 (create practitioner), FR‑03 (booking), FR‑08 (availability), FR‑04 (double‑booking rules) | Accepted     | Practitioner is required for booking, availability, and clash prevention                     | Practitioner class added with minimal identity attributes                                                                 |
+| Include an **Appointment** class                         | FR‑03–FR‑12 (booking, cancellation, retention, status, history, clash errors, reporting)         | Accepted     | Appointment is central to almost all requirements                                            | Appointment class added with patient, practitioner, time, status                                                          |
+| Appointment should link **Patient** and **Practitioner** | FR‑03 (booking involves both), FR‑10 (patient history), FR‑08 (practitioner schedule)            | Accepted     | Relationships are explicitly required for history and availability                           | Appointment → Patient and Appointment → Practitioner associations added                                                   |
+| **Add AppointmentStatus as a separate concept as Enum**  | FR‑09 (update status: completed, cancelled)                                                      | **Modified** | Status changes are required, and separating status avoids mixing logic with appointment data | Status added as a plain string attribute on Appointment with valid values noted in a comment                              |
+| Add **AppointmentHistory / RetentionPolicy**             | FR‑06 (retain cancelled for 30 days), FR‑10 (full history)                                       | Modified     | History retention is a real requirement, but a standalone class is not yet justified.        | Retention is modelled as a status value on Appointment (CANCELLED), with cancelled appointments retained and not deleted. |
+| Add **SearchService** (domain‑level responsibility)      | FR‑07 (search patient), FR‑08 (list practitioner appointments)                                   | Modified     | This is a real requirement but giving it a name as a Service class is early for this stage   | Search will be as required behavior and will not be introduced as a class yet                                             |
+| Add **ReportingService**                                 | FR‑12 (generate basic report)                                                                    | Modified     | This is a real requirement but giving it a name as a Service class is early for this stage   | Reporting will be as required behavior and will not be introduced as a class yet                                          |
+| Add **TimeSlot / Availability** for practitioners        | FR‑08 mentions “availability” but does not define structure                                      | Uncertain    | Requirement does not specify how availability is represented                                 | Flagged for human review; not added to model yet                                                                          |
+| Define detailed contact‑details fields                   | FR‑01 only says “contact details”                                                                | Rejected     | No requirement specifies phone/email/address                                                 | The model keeps contact details generic                                                                                   |
+| Define detailed practitioner attributes                  | FR‑02 only says “practitioner record”                                                            | Rejected     | No requirement specifies fields beyond identity                                              | Model keeps practitioner minimal                                                                                          |
+| Define report format or structure                        | FR‑12 only says “basic report”                                                                   | Uncertain    | No requirement defines output format                                                         | Report format left is not yet decided but reporting behaviour is noted as required and not yet formalized as a class      |
+
+# F - Compare and Decide
+
+Record at least one accepted, modified, and rejected AI suggestion.  
+Accepted:-  
+Appointment should link Patient and Practitioner– As relationships are
+explicitly required for history and availability.  
+  
+Modified:-  
+AppointmentHistory / RetentionPolicy – The need for FR-06/FR-10 is
+accepted, but it is implemented as a status value on the appointment
+(CANCELLED) instead of a separate class.
+
+Rejected:-  
+Detailed contact-detail fields (phone/email/address) - FR-01 only says
+"contact details and no other specific fields were confirmed; adding
+them only invents requirements the client never gave
+
+# G - Python Skeletons
+
+Create simple Patient, Practitioner, and Appointment class skeletons.  
+- ans in Python Skeleton.py
+
+# H - Consistency Check
+
+Check model-code consistency; do not implement full behavior yet.  
+Ans:-
+
+Class names (Patient, Practitioner, Appointment) match the UML design, while attributes such as name, specialty, date_time, and status also match the modelled state. The validate(), cancel(), and update_status() methods all match the responsibilities assigned on the CRC cards. Status is implemented as a plain string ("booked"/"completed"/"cancelled"/"no_show"), consistent with the Part E decision to modify the AI's original suggestion for how status should be represented. No unsupported classes such as Manager, Database, or NotificationManager were introduced during coding, matching the AI Design Review decisions in Part E.
+
+# Reflection
+
+What modelling decision was hardest? Where did AI over-design? What
+evidence supported your final choices?
+
+Ans- The hardest modelling decision was to decide where to place the
+FR-04/FR-11 duplicate-booking conflict check. It doesn't belong inside a
+single Appointment object, since checking for a clash means comparing
+against a practitioner's entire schedule, not just one appointment's own
+data, which is why it was deferred to a future service-level
+responsibility rather than forced onto Appointment or Practitioner
+directly.
+
+AI over-designed in a few places. It suggested Manager-style classes
+(PatientManager, AppointmentManager, NotificationManager) with no
+requirement actually calling for them, and it suggested representing
+appointment status as a separate typed concept in a way that assumed
+more advanced Python than has been covered in the unit so far. Both of
+these suggestions were modified: the Manager classes were rejected,
+while status was implemented as a plain string with documented valid
+values instead.
+
+The final class set (Patient, Practitioner, Appointment) was supported
+by direct traceability to FR-01 through FR-12. Every class, attribute,
+and method exists because a specific requirement calls for it. In
+contrast, every rejected or modified AI suggestion either had no
+matching requirement or assumed capabilities beyond what has actually
+been taught.
